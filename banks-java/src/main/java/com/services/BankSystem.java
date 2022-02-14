@@ -4,7 +4,7 @@ import com.accounts.*;
 import com.banks.BankConditions;
 import com.banks.BaseBank;
 import com.banks.DefaultBank;
-import com.clients.BaseClient;
+import com.clients.DefaultClient;
 import com.common.InterestRatesForDeposit;
 import com.common.Percent;
 import com.common.Range;
@@ -18,12 +18,12 @@ import java.util.UUID;
 
 public class BankSystem {
     private final List<BaseBank> banks = new ArrayList<>();
-    private final List<BaseClient> clients = new ArrayList<>();
+    private final List<DefaultClient> clients = new ArrayList<>();
     private final List<BaseAccount> accounts = new ArrayList<>();
     private final TransactionHistory transactionsHistory = new TransactionHistory();
 
     public  List<BaseBank> getBanks() { return Collections.unmodifiableList(banks); }
-    public  List<BaseClient> getClients() { return Collections.unmodifiableList(clients); }
+    public  List<DefaultClient> getClients() { return Collections.unmodifiableList(clients); }
     public  List<BaseAccount> getAccounts() { return Collections.unmodifiableList(accounts); }
 
 
@@ -38,7 +38,7 @@ public class BankSystem {
         banks.add(new DefaultBank(name, bankConditions));
     }
 
-    public void addClientToBank(BaseClient client, String bankName) throws BanksException {
+    public void addClientToBank(DefaultClient client, String bankName) throws BanksException {
         if (client == null) throw new BanksException("Adding client can't be null");
         if (bankName.isEmpty()) throw new BanksException("Bank name can't be null or empty");
 
@@ -49,7 +49,7 @@ public class BankSystem {
     }
 
     public BaseAccount createAccount(AccountType accountType, String bankName, int phoneNumber) throws BanksException {
-        BaseClient client = getClient(bankName, phoneNumber);
+        DefaultClient client = getClient(bankName, phoneNumber);
         BaseBank bank = getBank(bankName);
 
         BaseAccount account = switch (accountType) {
@@ -138,7 +138,7 @@ public class BankSystem {
     }
 
     public void subscribeClientToNotifications(String bankName, int phoneNumber) throws BanksException {
-        BaseClient client = getClient(bankName, phoneNumber);
+        DefaultClient client = getClient(bankName, phoneNumber);
         if (!this.clients.contains(client))
         {
             throw new BanksException("Subscribing client doesn't exist");
@@ -175,7 +175,7 @@ public class BankSystem {
         return new BankConditions(getBank(bankName).getConditions());
     }
 
-    public BaseClient getClient(String bankName, int phoneNumber) throws BanksException {
+    public DefaultClient getClient(String bankName, int phoneNumber) throws BanksException {
         return getBank(bankName).getClient(phoneNumber);
     }
 

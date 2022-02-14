@@ -1,13 +1,13 @@
 package com.banks;
 
 import com.accounts.BaseAccount;
-import com.clients.BaseClient;
+import com.clients.DefaultClient;
 
 import java.util.*;
 
 public abstract class BaseBank implements Bank {
     private final String name;
-    protected final HashMap<BaseClient, List<BaseAccount>> accounts = new HashMap<>();
+    protected final HashMap<DefaultClient, List<BaseAccount>> accounts = new HashMap<>();
     protected final BankConditions conditions;
 
     public BaseBank(String name, BankConditions conditions) {
@@ -19,7 +19,7 @@ public abstract class BaseBank implements Bank {
         return name;
     }
 
-    public Map<BaseClient, List<BaseAccount>> getAccounts() {
+    public Map<DefaultClient, List<BaseAccount>> getAccounts() {
         return Collections.unmodifiableMap(accounts);
     }
 

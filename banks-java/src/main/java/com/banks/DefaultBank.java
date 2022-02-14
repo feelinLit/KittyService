@@ -4,8 +4,7 @@ import com.accounts.BaseAccount;
 import com.accounts.CreditAccount;
 import com.accounts.DebitAccount;
 import com.accounts.DepositAccount;
-import com.clients.BaseClient;
-import com.clients.Client;
+import com.clients.DefaultClient;
 import com.common.InterestRatesForDeposit;
 import com.common.Percent;
 import com.common.Range;
@@ -19,7 +18,7 @@ public class DefaultBank extends BaseBank {
         super(name, conditions);
     }
 
-    public void addClient(BaseClient client) throws BanksException {
+    public void addClient(DefaultClient client) throws BanksException {
         if (client == null) throw new BanksException("Client can't be null");
         if (accounts.keySet().stream().anyMatch(c -> client.getPhoneNumber() == c.getPhoneNumber()))
             throw new BanksException("Adding client already exists in this bank: " + getName());
@@ -27,7 +26,7 @@ public class DefaultBank extends BaseBank {
         accounts.put(client, new ArrayList<>());
     }
 
-    public void addAccount(BaseClient client, BaseAccount account) throws BanksException {
+    public void addAccount(DefaultClient client, BaseAccount account) throws BanksException {
         if (client == null) throw new BanksException("Client can't be null");
         if (account == null) throw new BanksException("Account can't be null");
 
@@ -78,8 +77,8 @@ public class DefaultBank extends BaseBank {
         }
     }
 
-    public BaseClient getClient(int phoneNumber) throws BanksException {
-        BaseClient found = accounts.keySet().stream().filter(c -> c.getPhoneNumber() == phoneNumber).findFirst().orElse(null);
+    public DefaultClient getClient(int phoneNumber) throws BanksException {
+        DefaultClient found = accounts.keySet().stream().filter(c -> c.getPhoneNumber() == phoneNumber).findFirst().orElse(null);
         if (found == null) {
             throw new BanksException(getName() + " doesn't contain the client with phone number {phoneNumber}");
         }
@@ -93,7 +92,7 @@ public class DefaultBank extends BaseBank {
         }
     }
 
-    public void subscribeClientToNotifications(BaseClient client) throws BanksException {
+    public void subscribeClientToNotifications(DefaultClient client) throws BanksException {
         if (client == null) throw new BanksException("Subscribing client can't be null");
         if (!accounts.containsKey(client)) throw new BanksException("Subscriber isn't a client of this bank");
 

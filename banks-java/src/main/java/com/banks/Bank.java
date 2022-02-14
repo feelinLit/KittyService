@@ -1,18 +1,18 @@
 package com.banks;
 
 import com.accounts.BaseAccount;
-import com.clients.BaseClient;
+import com.clients.DefaultClient;
 import com.common.InterestRatesForDeposit;
 import com.common.Percent;
 import com.common.Range;
 import com.tools.BanksException;
 
 public interface Bank {
-    void addClient(BaseClient client) throws BanksException;
+    void addClient(DefaultClient client) throws BanksException;
 
-    void addAccount(BaseClient client, BaseAccount account) throws BanksException;
+    void addAccount(DefaultClient client, BaseAccount account) throws BanksException;
 
-    void subscribeClientToNotifications(BaseClient client) throws BanksException;
+    void subscribeClientToNotifications(DefaultClient client) throws BanksException;
 
     void changeInterestRateForDebit(Percent value);
 
@@ -26,5 +26,5 @@ public interface Bank {
 
     void changeLimitForCredit(double value);
 
-    BaseClient getClient(int phoneNumber) throws BanksException;
+    DefaultClient getClient(int phoneNumber) throws BanksException;
 }

@@ -35,8 +35,6 @@ public abstract class BaseAccount implements Account {
 
     abstract public void setInterest(Percent interest);
 
-    public boolean isTrustworthy() { return isTrustworthy; }
-
     protected void setTrustworthy(boolean trustworthy) { isTrustworthy = trustworthy; }
 
     public double getTransactionLimit() { return isTrustworthy ? Double.MAX_VALUE : transactionLimit; }
