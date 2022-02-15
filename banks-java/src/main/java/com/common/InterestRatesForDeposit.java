@@ -15,7 +15,8 @@ public class InterestRatesForDeposit {
 
     public void addInterestRate(Range range, Percent interest) throws BanksException {
         for (var key : content.keySet()) {
-            if (key.intersects(range)) throw new BanksException("Adding range intersects with existing one");
+            if (key.intersects(range))
+                throw new BanksException("Adding range intersects with existing one");
         }
 
         content.put(range, interest);
@@ -29,7 +30,8 @@ public class InterestRatesForDeposit {
     }
 
     public Percent getInterestRateForCurrentBalance(double balance) throws BanksException {
-        var foundRange = content.keySet().stream().filter(range1 -> range1.contains(balance)).findAny().orElse(null);
+        var foundRange =
+                content.keySet().stream().filter(range1 -> range1.contains(balance)).findAny().orElse(null);
         if (foundRange == null) throw new BanksException("No interest for balance: " + balance);
 
         return content.get(foundRange);

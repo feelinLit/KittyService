@@ -8,8 +8,8 @@ public class TransferTransaction extends BaseTransaction {
     private final BaseAccount accountReceiver;
     private final double transactionValue;
 
-    public TransferTransaction(BaseAccount accountSender, BaseAccount accountReceiver, double transactionValue)
-    {
+    public TransferTransaction(
+            BaseAccount accountSender, BaseAccount accountReceiver, double transactionValue) {
         this.accountSender = accountSender;
         this.accountReceiver = accountReceiver;
         this.transactionValue = transactionValue;

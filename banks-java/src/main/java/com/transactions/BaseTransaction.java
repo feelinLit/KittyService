@@ -19,5 +19,6 @@ public abstract class BaseTransaction {
     }
 
     public abstract void execute() throws BanksException;
+
     public abstract void cancel() throws BanksException;
 }

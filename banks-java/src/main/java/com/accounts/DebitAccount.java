@@ -3,8 +3,10 @@ package com.accounts;
 import com.common.Percent;
 import com.tools.BanksException;
 
-public class DebitAccount extends BaseAccount{
-    public DebitAccount(boolean isTrustworthy, double transactionLimit, Percent interest, double currentBalance) throws BanksException {
+public class DebitAccount extends BaseAccount {
+    public DebitAccount(
+            boolean isTrustworthy, double transactionLimit, Percent interest, double currentBalance)
+            throws BanksException {
         super(isTrustworthy, transactionLimit);
         setInterest(interest);
         setCurrentBalance(currentBalance);
@@ -19,8 +21,7 @@ public class DebitAccount extends BaseAccount{
     public void setCurrentBalance(double currentBalance) throws BanksException {
         if (this.currentBalance - currentBalance > this.transactionLimit)
             throw new BanksException("Transaction exceeds limit");
-        if (currentBalance < 0)
-            throw new BanksException("Balance of debit account can't be under 0");
+        if (currentBalance < 0) throw new BanksException("Balance of debit account can't be under 0");
         this.currentBalance = currentBalance;
     }
 

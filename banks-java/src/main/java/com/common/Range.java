@@ -1,11 +1,10 @@
 package com.common;
 
-public class Range
-{
-    private int start;
-    private int end;
+public class Range {
+    private final int start;
+    private final int end;
 
-    public Range(int low, int start){
+    public Range(int low, int start) {
         this.start = low;
         this.end = start;
     }
@@ -18,21 +17,20 @@ public class Range
         return end;
     }
 
-    public boolean contains(int number){
+    public boolean contains(int number) {
         return (number >= start && number <= end);
     }
 
-    public boolean contains(double number){
+    public boolean contains(double number) {
         return (number >= start && number <= end);
     }
 
-    public boolean intersects(Range anotherRange) { return this.start < anotherRange.end && anotherRange.start < end; }
+    public boolean intersects(Range anotherRange) {
+        return this.start < anotherRange.end && anotherRange.start < end;
+    }
 
     @Override
     public String toString() {
-        return "Range{" +
-                "start=" + start +
-                ", end=" + end +
-                '}';
+        return "Range{" + "start=" + start + ", end=" + end + '}';
     }
 }

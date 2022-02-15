@@ -7,7 +7,11 @@ import com.tools.BanksException;
 public class DepositAccount extends BaseAccount {
     private InterestRatesForDeposit interestRatesForDeposit;
 
-    public DepositAccount(boolean isTrustworthy, double transactionLimit, InterestRatesForDeposit interestRatesForDeposit, double currentBalance)
+    public DepositAccount(
+            boolean isTrustworthy,
+            double transactionLimit,
+            InterestRatesForDeposit interestRatesForDeposit,
+            double currentBalance)
             throws BanksException {
         super(isTrustworthy, transactionLimit);
         setInterestRatesForDeposit(interestRatesForDeposit);
@@ -23,8 +27,7 @@ public class DepositAccount extends BaseAccount {
     public void setCurrentBalance(double currentBalance) throws BanksException {
         if (this.currentBalance - currentBalance > this.transactionLimit)
             throw new BanksException("Transaction exceeds limit");
-        if (currentBalance < 0)
-            throw new BanksException("Balance of debit account can't be under 0");
+        if (currentBalance < 0) throw new BanksException("Balance of debit account can't be under 0");
         this.currentBalance = currentBalance;
     }
 
@@ -34,8 +37,7 @@ public class DepositAccount extends BaseAccount {
     }
 
     @Override
-    public void setInterest(Percent interest) {
-    }
+    public void setInterest(Percent interest) {}
 
     @Override
     public void chargeInterest() throws BanksException {

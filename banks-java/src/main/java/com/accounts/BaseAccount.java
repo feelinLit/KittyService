@@ -27,34 +27,51 @@ public abstract class BaseAccount implements Account {
         setCurrentBalance(getCurrentBalance() + money);
     }
 
-    public double getNotAccruedInterest() { return notAccruedInterest; }
+    public double getNotAccruedInterest() {
+        return notAccruedInterest;
+    }
 
-    public void setNotAccruedInterest(double notAccruedInterest) { this.notAccruedInterest = notAccruedInterest; }
+    public void setNotAccruedInterest(double notAccruedInterest) {
+        this.notAccruedInterest = notAccruedInterest;
+    }
 
-    abstract public Percent getInterest() throws BanksException;
+    public abstract Percent getInterest() throws BanksException;
 
-    abstract public void setInterest(Percent interest);
+    public abstract void setInterest(Percent interest);
 
-    protected void setTrustworthy(boolean trustworthy) { isTrustworthy = trustworthy; }
-
-    public double getTransactionLimit() { return isTrustworthy ? Double.MAX_VALUE : transactionLimit; }
+    public double getTransactionLimit() {
+        return isTrustworthy ? Double.MAX_VALUE : transactionLimit;
+    }
 
     public void setTransactionLimit(double transactionLimit) throws BanksException {
         if (transactionLimit < 0) throw new BanksException("Transaction limit can't be negative");
         this.transactionLimit = transactionLimit;
     }
 
-    public UUID getId() { return Id; }
-
+    public UUID getId() {
+        return Id;
+    }
 
     public abstract void chargeInterest() throws BanksException;
+
     public abstract void topUpInterest();
 
     @Override
-    public void onTrustworthinessRaised() {isTrustworthy = true; }
+    public void onTrustworthinessRaised() {
+        isTrustworthy = true;
+    }
 
     @Override
     public Object clone() throws CloneNotSupportedException {
         return super.clone();
+    }
+
+    @Override
+    public boolean isTrustworthy() {
+        return isTrustworthy;
+    }
+
+    protected void setTrustworthy(boolean trustworthy) {
+        isTrustworthy = trustworthy;
     }
 }

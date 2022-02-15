@@ -6,9 +6,9 @@ import com.clients.DefaultClient;
 import java.util.*;
 
 public abstract class BaseBank implements Bank {
-    private final String name;
     protected final HashMap<DefaultClient, List<BaseAccount>> accounts = new HashMap<>();
     protected final BankConditions conditions;
+    private final String name;
 
     public BaseBank(String name, BankConditions conditions) {
         this.name = name;
@@ -36,5 +36,7 @@ public abstract class BaseBank implements Bank {
     }
 
     @Override
-    public int hashCode() {return Objects.hash(name); }
+    public int hashCode() {
+        return Objects.hash(name);
+    }
 }

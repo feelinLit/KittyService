@@ -1,11 +1,10 @@
 package com.banks;
 
-
 import java.util.ArrayList;
 import java.util.List;
 
 public class ConditionChangeEvent {
-    private List<ConditionChangeEventListener> listeners = new ArrayList<>();
+    private final List<ConditionChangeEventListener> listeners = new ArrayList<>();
 
     public void subscribe(ConditionChangeEventListener listener) {
         listeners.add(listener);

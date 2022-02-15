@@ -10,7 +10,9 @@ public class TrustworthinessRaiseEvent {
         listeners.add(listener);
     }
 
-    public void unsubscribe(TrustworthinessRaiseEventListener listener) { listeners.remove(listener); }
+    public void unsubscribe(TrustworthinessRaiseEventListener listener) {
+        listeners.remove(listener);
+    }
 
     public void invoke() {
         for (var listener : listeners) {
