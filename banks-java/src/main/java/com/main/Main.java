@@ -1,7 +1,9 @@
 package com.main;
 
+import com.consoleui.Application;
+
 public class Main {
     public static void main(String[] args){
-        System.out.println("Lol..\b");
+        new Application().start();
     }
 }

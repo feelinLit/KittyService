@@ -20,12 +20,13 @@ public class BankSystem {
     private final List<BaseBank> banks = new ArrayList<>();
     private final List<DefaultClient> clients = new ArrayList<>();
     private final List<BaseAccount> accounts = new ArrayList<>();
+
     private final TransactionHistory transactionsHistory = new TransactionHistory();
 
     public  List<BaseBank> getBanks() { return Collections.unmodifiableList(banks); }
     public  List<DefaultClient> getClients() { return Collections.unmodifiableList(clients); }
     public  List<BaseAccount> getAccounts() { return Collections.unmodifiableList(accounts); }
-
+    public TransactionHistory getTransactionsHistory() { return transactionsHistory; }
 
     public void addBank(String name, BankConditions bankConditions) throws BanksException {
         if (bankConditions == null) throw new BanksException("Bank Conditions can't be null");
