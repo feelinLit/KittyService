@@ -1,13 +1,13 @@
 package com.tests;
 
-import com.itmo.account.AccountType;
-import com.itmo.bank.BankConditions;
-import com.itmo.client.ClientBuilder;
-import com.itmo.common.InterestRatesForDeposit;
-import com.itmo.common.Percent;
-import com.itmo.common.Range;
-import com.itmo.service.BankSystem;
-import com.itmo.tool.BanksException;
+import com.itmo.banksjava.account.AccountType;
+import com.itmo.banksjava.bank.BankConditions;
+import com.itmo.banksjava.client.ClientBuilder;
+import com.itmo.banksjava.common.InterestRatesForDeposit;
+import com.itmo.banksjava.common.Percent;
+import com.itmo.banksjava.common.Range;
+import com.itmo.banksjava.service.BankSystem;
+import com.itmo.banksjava.tool.BanksException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
