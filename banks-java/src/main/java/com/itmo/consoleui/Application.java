@@ -19,8 +19,7 @@ public class Application {
     private final Map<String, Runnable> commands;
     private final Scanner scanner = new Scanner(System.in);
 
-    public Application()
-    {
+    public Application() {
         commands = Stream.of(new Object[][] {
             { "!ShowCommands", (Runnable) this::showCommands},
             { "!CreateBank", (Runnable) this::createBank},
@@ -114,8 +113,7 @@ public class Application {
         var interestRatesForDeposit = new InterestRatesForDeposit();
         System.out.println("-Interest Rates for Deposit accounts");
         System.out.println("-Add new ranges with interest rates (enter 'stop' to stop)");
-        do
-        {
+        do {
             Integer rangeStart = null, rangeEnd = null;
             Double interest = null;
             System.out.println("-Range starts at: ");
