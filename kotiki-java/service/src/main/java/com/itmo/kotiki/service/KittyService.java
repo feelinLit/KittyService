@@ -21,7 +21,7 @@ public class KittyService {
     public void update(Kitty entity) {
         kittyDao.openCurrentSessionWithTransaction();
         kittyDao.update(entity);
-        kittyDao.openCurrentSessionWithTransaction();
+        kittyDao.closeCurrentSessionWithTransaction();
     }
 
     public Kitty findById(Long id) {
@@ -35,7 +35,7 @@ public class KittyService {
         kittyDao.openCurrentSessionWithTransaction();
         Kitty kitty = kittyDao.findById(id);
         kittyDao.delete(kitty);
-        kittyDao.openCurrentSessionWithTransaction();
+        kittyDao.closeCurrentSessionWithTransaction();
     }
 
     public List<Kitty> findAll() {
@@ -48,10 +48,10 @@ public class KittyService {
     public void deleteAll() {
         kittyDao.openCurrentSessionWithTransaction();
         kittyDao.deleteAll();
-        kittyDao.openCurrentSessionWithTransaction();
+        kittyDao.closeCurrentSessionWithTransaction();
     }
 
-    public KittyDao kittyDao() {
-        return kittyDao;
-    }
+//    public KittyDao kittyDao() {
+//        return kittyDao;
+//    }
 }

@@ -4,12 +4,12 @@ import javax.persistence.*;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "Kitty")
+@Table(name = "kitty")
 public class Kitty extends BaseEntity {
     @Column(name = "breed", length = 60)
     private String breed;
 
-    @Column(name = "name")
+    @Column(name = "name", length = 60)
     private String name;
 
     @Enumerated
@@ -22,6 +22,17 @@ public class Kitty extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "person_ID")
     private Person person;
+
+    protected Kitty() {
+    }
+
+    public Kitty(String breed, String name, Color color, LocalDate dateOfBirth, Person person) {
+        this.breed = breed;
+        this.name = name;
+        this.color = color;
+        this.dateOfBirth = dateOfBirth;
+        this.person = person;
+    }
 
     public Person getPerson() {
         return person;

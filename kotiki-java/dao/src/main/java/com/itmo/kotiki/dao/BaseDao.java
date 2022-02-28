@@ -1,6 +1,8 @@
 package com.itmo.kotiki.dao;
 
 import com.itmo.kotiki.entity.BaseEntity;
+import com.itmo.kotiki.entity.Kitty;
+import com.itmo.kotiki.entity.Person;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -10,14 +12,23 @@ import org.hibernate.cfg.Configuration;
 import java.util.List;
 
 public abstract class BaseDao<TEntity extends BaseEntity> implements Dao {
+    private SessionFactory sessionFactory;
     private Session currentSession;
     private Transaction currentTransaction;
 
-    private static SessionFactory getSessionFactory() {
+    public BaseDao() {
+        configureSessionFactory();
+    }
+
+    private SessionFactory getSessionFactory() { return sessionFactory; }
+
+    private void configureSessionFactory() {
         var configuration = new Configuration().configure();
+        configuration.addAnnotatedClass(Kitty.class);
+        configuration.addAnnotatedClass(Person.class);
         StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder()
                 .applySettings(configuration.getProperties());
-        return configuration.buildSessionFactory(builder.build());
+        sessionFactory = configuration.buildSessionFactory(builder.build());
     }
 
     public Session openCurrentSession() {
@@ -61,7 +72,7 @@ public abstract class BaseDao<TEntity extends BaseEntity> implements Dao {
     }
 
     public void update(BaseEntity entity) {
-        getCurrentSession().update(entity);
+        getCurrentSession().saveOrUpdate(entity);
     }
 
     public abstract TEntity findById(Long id);

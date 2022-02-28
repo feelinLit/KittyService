@@ -1,15 +1,12 @@
 package com.itmo.kotiki.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "Person")
+@Table(name = "person")
 public class Person extends BaseEntity {
     @Column(name = "name", length = 30)
     private String name;
@@ -17,16 +14,32 @@ public class Person extends BaseEntity {
     @Column(name = "date_of_birth", nullable = false)
     private LocalDate dateOfBirth;
 
-    @OneToMany(mappedBy = "person", orphanRemoval = true)
-    private List<Kitty> kitties = new ArrayList<>();
+    @OneToMany(mappedBy = "person", orphanRemoval = true, fetch = FetchType.LAZY)
+    private final List<Kitty> kitties = new ArrayList<>();
+
+    public Person(String name, LocalDate dateOfBirth, Kitty kitty) {
+        this.name = name;
+        this.dateOfBirth = dateOfBirth;
+        if (kitty != null)
+            addKitty(kitty);
+    }
+
+    protected Person() { }
 
     public List<Kitty> getKitties() {
         return kitties;
     }
 
-    public void setKitties(List<Kitty> kitties) {
-        this.kitties = kitties;
+    public void addKitty(Kitty kitty) {
+        if (kitty.getPerson() != null && kitty.getPerson() != this)
+            throw new RuntimeException(); // TODO: exceptions
+        this.kitties.add(kitty);
+        kitty.setPerson(this);
     }
+
+//    public void setKitties(List<Kitty> kitties) {
+//        this.kitties = kitties;
+//    }
 
     public LocalDate getDateOfBirth() {
         return dateOfBirth;

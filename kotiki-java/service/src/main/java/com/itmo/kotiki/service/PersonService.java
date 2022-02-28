@@ -21,7 +21,7 @@ public class PersonService {
     public void update(Person entity) {
         personDao.openCurrentSessionWithTransaction();
         personDao.update(entity);
-        personDao.openCurrentSessionWithTransaction();
+        personDao.closeCurrentSessionWithTransaction();
     }
 
     public Person findById(Long id) {
@@ -35,7 +35,7 @@ public class PersonService {
         personDao.openCurrentSessionWithTransaction();
         Person person = personDao.findById(id);
         personDao.delete(person);
-        personDao.openCurrentSessionWithTransaction();
+        personDao.closeCurrentSessionWithTransaction();
     }
 
     public List<Person> findAll() {
@@ -48,10 +48,10 @@ public class PersonService {
     public void deleteAll() {
         personDao.openCurrentSessionWithTransaction();
         personDao.deleteAll();
-        personDao.openCurrentSessionWithTransaction();
+        personDao.closeCurrentSessionWithTransaction();
     }
 
-    public PersonDao personDao() {
-        return personDao;
-    }
+//    public PersonDao personDao() {
+//        return personDao;
+//    }
 }
