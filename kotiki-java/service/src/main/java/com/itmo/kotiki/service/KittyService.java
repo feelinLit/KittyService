@@ -1,15 +1,18 @@
 package com.itmo.kotiki.service;
 
 import com.itmo.kotiki.dao.KittyDao;
+import com.itmo.kotiki.dao.KittyFriendshipDao;
 import com.itmo.kotiki.entity.Kitty;
 
 import java.util.List;
 
 public class KittyService {
-    private static KittyDao kittyDao;
+    private final KittyDao kittyDao;
+    private final KittyFriendshipDao kittyFriendshipDao;
 
-    public KittyService() {
-        kittyDao = new KittyDao();
+    public KittyService(KittyDao kittyDao, KittyFriendshipDao kittyFriendshipDao) {
+        this.kittyDao = kittyDao;
+        this.kittyFriendshipDao = kittyFriendshipDao;
     }
 
     public void persist(Kitty entity) {
@@ -51,7 +54,12 @@ public class KittyService {
         kittyDao.closeCurrentSessionWithTransaction();
     }
 
-//    public KittyDao kittyDao() {
-//        return kittyDao;
-//    }
+    public void addFriendship(Kitty kitty1, Kitty kitty2) {
+        kittyFriendshipDao.openCurrentSessionWithTransaction();
+        var friendship1 = kitty1.addFriend(kitty2);
+        var friendship2 = kitty2.addFriend(kitty1);
+        kittyFriendshipDao.persist(friendship1);
+        kittyFriendshipDao.persist(friendship2);
+        kittyFriendshipDao.closeCurrentSessionWithTransaction();
+    }
 }

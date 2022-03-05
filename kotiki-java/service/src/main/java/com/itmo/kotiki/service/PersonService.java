@@ -6,10 +6,10 @@ import com.itmo.kotiki.entity.Person;
 import java.util.List;
 
 public class PersonService {
-    private static PersonDao personDao;
+    private final PersonDao personDao;
 
-    public PersonService() {
-        personDao = new PersonDao();
+    public PersonService(PersonDao personDao) {
+        this.personDao = personDao;
     }
 
     public void persist(Person entity) {
@@ -50,8 +50,4 @@ public class PersonService {
         personDao.deleteAll();
         personDao.closeCurrentSessionWithTransaction();
     }
-
-//    public PersonDao personDao() {
-//        return personDao;
-//    }
 }

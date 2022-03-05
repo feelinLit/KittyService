@@ -2,10 +2,9 @@ package com.itmo.kotiki.dao;
 
 import com.itmo.kotiki.entity.BaseEntity;
 
-import java.io.Serializable;
 import java.util.List;
 
-public interface Dao <TEntity extends BaseEntity> {
+public interface Dao<TEntity extends BaseEntity> {
     void persist(TEntity entity);
 
     void update(TEntity entity);

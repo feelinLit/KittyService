@@ -1,3 +1,6 @@
+import com.itmo.kotiki.dao.KittyDao;
+import com.itmo.kotiki.dao.KittyFriendshipDao;
+import com.itmo.kotiki.dao.PersonDao;
 import com.itmo.kotiki.entity.Color;
 import com.itmo.kotiki.entity.Kitty;
 import com.itmo.kotiki.entity.Person;
@@ -5,16 +8,14 @@ import com.itmo.kotiki.service.KittyService;
 import com.itmo.kotiki.service.PersonService;
 import org.hibernate.HibernateException;
 import org.hibernate.Metamodel;
-import org.hibernate.query.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.query.Query;
 
 import javax.persistence.metamodel.EntityType;
-
 import java.time.LocalDate;
 import java.time.Month;
-import java.util.Map;
 
 public class Main {
     private static final SessionFactory ourSessionFactory;
@@ -51,8 +52,8 @@ public class Main {
             session.close();
         }
 
-        PersonService personService = new PersonService();
-        KittyService kittyService = new KittyService();
+        PersonService personService = new PersonService(new PersonDao());
+        KittyService kittyService = new KittyService(new KittyDao(), new KittyFriendshipDao());
 
         Kitty kitty1 = new Kitty("Chartreux", "Sharik", Color.Black, LocalDate.of(2002, Month.JULY, 20), null);
         Kitty kitty2 = new Kitty("Maine Coon", "Kvadratik", Color.White, LocalDate.of(2010, Month.DECEMBER, 1), null);
@@ -73,10 +74,7 @@ public class Main {
         Kitty kitty4 = new Kitty("Obdolbysh", "Fish", Color.Black, LocalDate.of(2021, Month.MARCH, 22), person1);
         kittyService.persist(kitty4);
 
-        for (var kitty : kittyService.findAll())
-            System.out.println(kitty.getName() + ' ' + kitty.getColor());
-
-        for (var person : personService.findAll())
-            System.out.println(person.getName() + ' ' + person.getId());
+        kittyService.addFriendship(kitty1, kitty2);
+        kittyService.addFriendship(kitty1, kitty3);
     }
 }

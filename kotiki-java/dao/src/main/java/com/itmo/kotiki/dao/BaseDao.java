@@ -2,6 +2,7 @@ package com.itmo.kotiki.dao;
 
 import com.itmo.kotiki.entity.BaseEntity;
 import com.itmo.kotiki.entity.Kitty;
+import com.itmo.kotiki.entity.KittyFriendship;
 import com.itmo.kotiki.entity.Person;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -26,6 +27,7 @@ public abstract class BaseDao<TEntity extends BaseEntity> implements Dao {
         var configuration = new Configuration().configure();
         configuration.addAnnotatedClass(Kitty.class);
         configuration.addAnnotatedClass(Person.class);
+        configuration.addAnnotatedClass(KittyFriendship.class);
         StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder()
                 .applySettings(configuration.getProperties());
         sessionFactory = configuration.buildSessionFactory(builder.build());
