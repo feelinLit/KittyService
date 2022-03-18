@@ -12,8 +12,10 @@ import java.util.List;
 public class Person extends BaseEntity {
     @OneToMany(mappedBy = "person", orphanRemoval = true, fetch = FetchType.LAZY)
     private final List<Kitty> kitties = new ArrayList<>();
+
     @Column(name = "name", length = 30)
     private String name;
+
     @Column(name = "date_of_birth", nullable = false)
     private LocalDate dateOfBirth;
 

@@ -1,7 +1,7 @@
 package com.itmo.kotiki.entity;
 
 public enum Color {
-    White,
-    Black,
-    NonBinary,
+    WHITE,
+    BLACK,
+    NON_BINARY,
 }

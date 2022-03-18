@@ -55,9 +55,9 @@ public class Main {
         PersonService personService = new PersonService(new PersonDao());
         KittyService kittyService = new KittyService(new KittyDao(), new KittyFriendshipDao());
 
-        Kitty kitty1 = new Kitty("Chartreux", "Sharik", Color.Black, LocalDate.of(2002, Month.JULY, 20), null);
-        Kitty kitty2 = new Kitty("Maine Coon", "Kvadratik", Color.White, LocalDate.of(2010, Month.DECEMBER, 1), null);
-        Kitty kitty3 = new Kitty("Himalayan", "Ryzhik", Color.NonBinary, LocalDate.of(2015, Month.SEPTEMBER, 6), null);
+        Kitty kitty1 = new Kitty("Chartreux", "Sharik", Color.BLACK, LocalDate.of(2002, Month.JULY, 20), null);
+        Kitty kitty2 = new Kitty("Maine Coon", "Kvadratik", Color.WHITE, LocalDate.of(2010, Month.DECEMBER, 1), null);
+        Kitty kitty3 = new Kitty("Himalayan", "Ryzhik", Color.NON_BINARY, LocalDate.of(2015, Month.SEPTEMBER, 6), null);
         kittyService.persist(kitty1);
         kittyService.persist(kitty2);
         kittyService.persist(kitty3);
@@ -71,7 +71,7 @@ public class Main {
         kittyService.update(kitty1);
         kittyService.update(kitty2);
 
-        Kitty kitty4 = new Kitty("Obdolbysh", "Fish", Color.Black, LocalDate.of(2021, Month.MARCH, 22), person1);
+        Kitty kitty4 = new Kitty("Obdolbysh", "Fish", Color.BLACK, LocalDate.of(2021, Month.MARCH, 22), person1);
         kittyService.persist(kitty4);
 
         kittyService.addFriendship(kitty1, kitty2);

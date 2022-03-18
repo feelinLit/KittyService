@@ -18,7 +18,7 @@ public class Kitty extends BaseEntity {
     private String name;
 
     @Enumerated
-    @Column(name = "color")
+    @Column(name = "color", columnDefinition = "TEXT")
     private Color color;
 
     @Column(name = "date_of_birth", nullable = false)

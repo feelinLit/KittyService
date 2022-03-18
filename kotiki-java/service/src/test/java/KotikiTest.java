@@ -39,8 +39,8 @@ public class KotikiTest {
     }
 
     @Test
-    public void FindByIdKitty_KittyFound() {
-        var mockedKitty = new Kitty("breed", "Name", Color.Black, LocalDate.now(), null);
+    public void findByIdKitty_KittyFound() {
+        var mockedKitty = new Kitty("breed", "Name", Color.BLACK, LocalDate.now(), null);
         when(kittyDao.findById(1L)).thenReturn(mockedKitty);
 
         var foundKitty = kittyService.findById(1L);
@@ -53,9 +53,9 @@ public class KotikiTest {
     }
 
     @Test
-    public void AddKittyFriend_FriendAdded() {
-        var kitty1 = new Kitty("breed", "Name", Color.Black, LocalDate.now(), null);
-        var kitty2 = new Kitty("friendBreed", "Friend", Color.White, LocalDate.now(), null);
+    public void addKittyFriend_FriendAdded() {
+        var kitty1 = new Kitty("breed", "Name", Color.BLACK, LocalDate.now(), null);
+        var kitty2 = new Kitty("friendBreed", "Friend", Color.WHITE, LocalDate.now(), null);
 
         kittyService.addFriendship(kitty1, kitty2);
 
