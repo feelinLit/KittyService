@@ -11,6 +11,7 @@ import java.util.List;
 @Entity
 @Table(name = "kitty")
 public class Kitty extends BaseEntity {
+
     @Column(name = "breed", length = 60)
     private String breed;
 

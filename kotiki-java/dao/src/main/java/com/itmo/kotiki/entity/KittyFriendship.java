@@ -5,6 +5,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "kitty_friendship")
 public class KittyFriendship extends BaseEntity {
+
     @ManyToOne
     @JoinColumn(name = "kitty_id")
     private Kitty kitty;
