@@ -19,7 +19,7 @@ public class Kitty extends BaseEntity {
     private String name;
 
     @Enumerated
-    @Column(name = "color", columnDefinition = "TEXT")
+    @Column(name = "color")
     private Color color;
 
     @Column(name = "date_of_birth", nullable = false)
@@ -29,8 +29,11 @@ public class Kitty extends BaseEntity {
     @JoinColumn(name = "person_ID")
     private Person person;
 
-    @OneToMany(mappedBy = "kitty", orphanRemoval = true)
-    private final List<KittyFriendship> kittyFriendships = new ArrayList<>();
+    @ManyToMany
+    @JoinTable(name = "kitty_friends",
+            joinColumns = @JoinColumn(name = "kitty_1_id"),
+            inverseJoinColumns = @JoinColumn(name = "kitties_2_id"))
+    private final List<Kitty> kittyFriends = new ArrayList<>();
 
     protected Kitty() {
     }
@@ -83,19 +86,15 @@ public class Kitty extends BaseEntity {
         this.breed = breed;
     }
 
-    public List<KittyFriendship> getKittyFriendships() {
-        return Collections.unmodifiableList(kittyFriendships);
+    public List<Kitty> getKittyFriends() {
+        return Collections.unmodifiableList(kittyFriends);
     }
 
-    public KittyFriendship addFriend(Kitty kitty) {
-        if (kitty == null)
+    public void addFriend(Kitty kittyFriend) {
+        if (kittyFriend == null)
             throw new DaoException("Kitty-friend can't be null");
-        if (kitty == this)
+        if (this.equals(kittyFriend))
             throw new DaoException("Kitty can't be friend of itself, it's schizo");
-        if (kittyFriendships.stream().anyMatch(kittyFriendship -> kittyFriendship.getKittysFriend().getId().equals(getId())))
-            throw new DaoException("Kitties are already friends :3");
-        var kittyFriendship = new KittyFriendship(this, kitty);
-        kittyFriendships.add(kittyFriendship);
-        return kittyFriendship;
+        kittyFriends.add(kittyFriend);
     }
 }

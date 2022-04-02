@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/person")
@@ -30,7 +29,15 @@ public class PersonController {
     public List<PersonDto> findAll() {
         return personService.findAll().stream()
                 .map(this::convertToDto)
-                .collect(Collectors.toList());
+                .toList();
+    }
+
+    @GetMapping(value = "/ByName/{name}")
+    @ResponseBody
+    public List<PersonDto> findAll(@PathVariable("name") String name) {
+        return personService.findAll(name).stream()
+                .map(this::convertToDto)
+                .toList();
     }
 
     @GetMapping(value = "/{id}")
@@ -42,7 +49,6 @@ public class PersonController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public PersonDto create(@RequestBody PersonDto personDto) {
-        // Preconditions.checkNotNull(resource);
         Person person = personService.save(convertToEntity(personDto));
         return convertToDto(person);
     }
@@ -50,8 +56,6 @@ public class PersonController {
     @PutMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.OK)
     public PersonDto updatePost(@PathVariable("id") Long id, @RequestBody PersonDto personDto) { // TODO: DTO
-//        Preconditions.checkNotNull(resource);
-//        RestPreconditions.checkNotNull(service.getById(resource.getId()));
         if (!Objects.equals(id, personDto.getId()))
             throw new IllegalArgumentException("IDs don't match");
         Person person = convertToEntity(personDto);
@@ -64,13 +68,16 @@ public class PersonController {
         personService.delete(id);
     }
 
-    private PersonDto convertToDto(Person person) {
-        PersonDto personDto = modelMapper.map(person, PersonDto.class); // TODO: Enum mapping
-        return personDto;
+    @PatchMapping(value = "/{personId}/addKitty")
+    public void addKitty(@PathVariable("personId") Long personId, Long kittyId) {
+        personService.addKitty(personId, kittyId);
     }
 
-    private Person convertToEntity(PersonDto personDto){
-        Person person = modelMapper.map(personDto, Person.class); // TODO: Enum mapping
-        return person;
+    private PersonDto convertToDto(Person person) {
+        return modelMapper.map(person, PersonDto.class);
+    }
+
+    private Person convertToEntity(PersonDto personDto) {
+        return modelMapper.map(personDto, Person.class);
     }
 }

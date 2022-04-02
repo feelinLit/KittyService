@@ -1,8 +1,11 @@
 package com.itmo.kotiki.service.implementation;
 
+import com.itmo.kotiki.entity.Kitty;
 import com.itmo.kotiki.entity.Person;
+import com.itmo.kotiki.repository.KittyRepository;
 import com.itmo.kotiki.repository.PersonRepository;
 import com.itmo.kotiki.service.PersonService;
+import com.itmo.kotiki.tool.DomainException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,11 +15,13 @@ import java.util.List;
 @Service
 public class PersonServiceImpl implements PersonService {
 
-    private PersonRepository personRepository;
+    private final PersonRepository personRepository;
+    private final KittyRepository kittyRepository;
 
     @Autowired
-    public PersonServiceImpl(PersonRepository personRepository) {
+    public PersonServiceImpl(PersonRepository personRepository, KittyRepository kittyRepository) {
         this.personRepository = personRepository;
+        this.kittyRepository = kittyRepository;
     }
 
     @Override
@@ -32,7 +37,8 @@ public class PersonServiceImpl implements PersonService {
                 .map(personFound -> {
                     personFound.setName(entity.getName());
                     if (entity.getDateOfBirth() != null) personFound.setDateOfBirth(entity.getDateOfBirth());
-                    return personFound;})
+                    return personFound;
+                })
                 .orElse(entity);
         return save(person);
     }
@@ -40,13 +46,13 @@ public class PersonServiceImpl implements PersonService {
     @Override
     public Person findById(Long id) {
         return personRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Person wasn't found"));
+                .orElseThrow(() -> new DomainException("Person wasn't found"));
     }
 
     @Override
     public void delete(Long id) {
         Person person = personRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Person wasn't found"));
+                .orElseThrow(() -> new DomainException("Person wasn't found"));
         personRepository.delete(person);
     }
 
@@ -56,7 +62,23 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
+    public List<Person> findAll(String name) {
+        return personRepository.findAllByName(name);
+    }
+
+    @Override
     public void deleteAll() {
         personRepository.deleteAll();
+    }
+
+    @Override
+    public void addKitty(Long personId, Long kittyId) {
+        Person person = personRepository.findById(personId)
+                .orElseThrow(() -> new DomainException("Person wasn't found"));
+        Kitty kitty = kittyRepository.findById(kittyId)
+                .orElseThrow(() -> new DomainException("Kitty wasn't found"));
+        person.addKitty(kitty);
+        personRepository.saveAndFlush(person);
+        kittyRepository.saveAndFlush(kitty);
     }
 }
