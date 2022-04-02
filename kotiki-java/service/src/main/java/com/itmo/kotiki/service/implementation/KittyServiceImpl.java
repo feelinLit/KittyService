@@ -7,6 +7,7 @@ import com.itmo.kotiki.service.KittyService;
 import com.itmo.kotiki.tool.DomainException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -29,6 +30,7 @@ public class KittyServiceImpl implements KittyService {
     }
 
     @Override
+    @Transactional
     public Kitty saveOrUpdate(Long id, Kitty entity) {
         Kitty kitty = kittyRepository.findById(id)
                 .map(kittyFound -> {

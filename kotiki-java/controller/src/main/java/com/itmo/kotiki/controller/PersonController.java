@@ -3,7 +3,6 @@ package com.itmo.kotiki.controller;
 import com.itmo.kotiki.dto.PersonDto;
 import com.itmo.kotiki.entity.Person;
 import com.itmo.kotiki.service.PersonService;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -16,12 +15,10 @@ import java.util.Objects;
 public class PersonController {
 
     private final PersonService personService;
-    private final ModelMapper modelMapper;
 
     @Autowired
-    public PersonController(PersonService personService, ModelMapper modelMapper) {
+    public PersonController(PersonService personService) {
         this.personService = personService;
-        this.modelMapper = modelMapper;
     }
 
     @GetMapping
@@ -32,7 +29,7 @@ public class PersonController {
                 .toList();
     }
 
-    @GetMapping(value = "/ByName/{name}")
+    @GetMapping(value = "/byName/{name}")
     @ResponseBody
     public List<PersonDto> findAll(@PathVariable("name") String name) {
         return personService.findAll(name).stream()
@@ -55,7 +52,7 @@ public class PersonController {
 
     @PutMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public PersonDto updatePost(@PathVariable("id") Long id, @RequestBody PersonDto personDto) { // TODO: DTO
+    public PersonDto updatePost(@PathVariable("id") Long id, @RequestBody PersonDto personDto) {
         if (!Objects.equals(id, personDto.getId()))
             throw new IllegalArgumentException("IDs don't match");
         Person person = convertToEntity(personDto);
@@ -74,10 +71,10 @@ public class PersonController {
     }
 
     private PersonDto convertToDto(Person person) {
-        return modelMapper.map(person, PersonDto.class);
+        return new PersonDto(person.getId(), person.getName(), person.getDateOfBirth());
     }
 
     private Person convertToEntity(PersonDto personDto) {
-        return modelMapper.map(personDto, Person.class);
+        return new Person(personDto.getName(), personDto.getDateOfBirth(), null);
     }
 }

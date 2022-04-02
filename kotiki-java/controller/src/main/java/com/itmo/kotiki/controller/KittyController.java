@@ -4,7 +4,6 @@ import com.itmo.kotiki.dto.KittyDto;
 import com.itmo.kotiki.entity.Color;
 import com.itmo.kotiki.entity.Kitty;
 import com.itmo.kotiki.service.KittyService;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -17,15 +16,13 @@ import java.util.Objects;
 class KittyController {
 
     private final KittyService kittyService;
-    private final ModelMapper modelMapper;
 
     @Autowired
-    public KittyController(KittyService kittyService, ModelMapper modelMapper) {
+    public KittyController(KittyService kittyService) {
         this.kittyService = kittyService;
-        this.modelMapper = modelMapper;
     }
 
-    @GetMapping("/ByColor/{color}")
+    @GetMapping("/byColor/{color}")
     @ResponseBody
     public List<KittyDto> findAllByColor(@PathVariable Color color) {
         return kittyService.findAll(color).stream()
@@ -33,7 +30,7 @@ class KittyController {
                 .toList();
     }
 
-    @GetMapping("/ByBreed/{breed}")
+    @GetMapping("/byBreed/{breed}")
     @ResponseBody
     public List<KittyDto> findAllByBreed(@PathVariable String breed) {
         return kittyService.findAll(breed).stream()
@@ -56,7 +53,7 @@ class KittyController {
 
     @PutMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public KittyDto updatePost(@PathVariable("id") Long id, @RequestBody KittyDto kittyDto) { // TODO: DTO
+    public KittyDto updatePost(@PathVariable("id") Long id, @RequestBody KittyDto kittyDto) {
         if (!Objects.equals(id, kittyDto.getId()))
             throw new IllegalArgumentException("IDs don't match");
         Kitty kitty = convertToEntity(kittyDto);
@@ -76,10 +73,10 @@ class KittyController {
     }
 
     private KittyDto convertToDto(Kitty kitty) {
-        return modelMapper.map(kitty, KittyDto.class);
+        return new KittyDto(kitty.getId(), kitty.getName(), kitty.getBreed(), kitty.getColor(), kitty.getDateOfBirth());
     }
 
     private Kitty convertToEntity(KittyDto kittyDto) {
-        return modelMapper.map(kittyDto, Kitty.class);
+        return new Kitty(kittyDto.getBreed(), kittyDto.getName(), kittyDto.getColor(), kittyDto.getDateOfBirth(), null);
     }
 }

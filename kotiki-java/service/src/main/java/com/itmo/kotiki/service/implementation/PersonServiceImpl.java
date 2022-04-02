@@ -8,6 +8,7 @@ import com.itmo.kotiki.service.PersonService;
 import com.itmo.kotiki.tool.DomainException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -32,6 +33,7 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
+    @Transactional
     public Person saveOrUpdate(Long id, Person entity) {
         Person person = personRepository.findById(id)
                 .map(personFound -> {

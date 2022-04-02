@@ -6,49 +6,37 @@ import java.time.LocalDate;
 
 public class KittyDto {
 
-    private Long id;
-    private String name;
-    private String breed;
-    private Color color;
-    private LocalDate dateOfBirth = LocalDate.now();
+    private final Long id;
+    private final String name;
+    private final String breed;
+    private final Color color;
+    private final LocalDate dateOfBirth;
+
+    public KittyDto(Long id, String name, String breed, Color color, LocalDate dateOfBirth) {
+        this.id = id;
+        this.name = name;
+        this.breed = breed;
+        this.color = color;
+        this.dateOfBirth = dateOfBirth;
+    }
 
     public Long getId() {
         return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String getBreed() {
         return breed;
-    }
-
-    public void setBreed(String breed) {
-        this.breed = breed;
     }
 
     public Color getColor() {
         return color;
     }
 
-    public void setColor(Color color) {
-        this.color = color;
-    }
-
     public LocalDate getDateOfBirth() {
         return dateOfBirth;
-    }
-
-    public void setDateOfBirth(LocalDate dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
     }
 }
