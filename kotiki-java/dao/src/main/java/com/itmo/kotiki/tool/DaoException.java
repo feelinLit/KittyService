@@ -1,6 +1,7 @@
 package com.itmo.kotiki.tool;
 
 public class DaoException extends RuntimeException {
+
     public DaoException() {
     }
 

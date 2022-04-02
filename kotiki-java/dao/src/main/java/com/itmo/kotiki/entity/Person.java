@@ -10,6 +10,7 @@ import java.util.List;
 @Entity
 @Table(name = "person")
 public class Person extends BaseEntity {
+
     @OneToMany(mappedBy = "person", orphanRemoval = true, fetch = FetchType.LAZY)
     private final List<Kitty> kitties = new ArrayList<>();
 
