@@ -6,7 +6,12 @@ import com.itmo.kotiki.entity.Kitty;
 import java.util.List;
 
 public interface KittyService extends Service<Kitty> {
+
     void addFriend(Long kittyId, Long friendId);
+
+    Kitty save(Kitty kitty, String username);
+
+    Kitty saveOrUpdate(Long id, Kitty entity, String username);
 
     List<Kitty> findAll(Color color);
 

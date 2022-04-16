@@ -71,10 +71,10 @@ public class PersonController {
     }
 
     private PersonDto convertToDto(Person person) {
-        return new PersonDto(person.getId(), person.getName(), person.getDateOfBirth());
+        return new PersonDto(person.getId(), person.getName(), person.getUsername(), person.getPassword(), person.getRole(), person.getDateOfBirth());
     }
 
     private Person convertToEntity(PersonDto personDto) {
-        return new Person(personDto.getName(), personDto.getDateOfBirth(), null);
+        return new Person(personDto.getName(), personDto.getUsername(), personDto.getPassword(), personDto.getRole(), personDto.getDateOfBirth(), null);
     }
 }

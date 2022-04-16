@@ -3,6 +3,7 @@ package com.itmo.kotiki.service.implementation;
 import com.itmo.kotiki.entity.Color;
 import com.itmo.kotiki.entity.Kitty;
 import com.itmo.kotiki.repository.KittyRepository;
+import com.itmo.kotiki.repository.PersonRepository;
 import com.itmo.kotiki.service.KittyService;
 import com.itmo.kotiki.tool.DomainException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,14 +17,17 @@ import java.util.List;
 public class KittyServiceImpl implements KittyService {
 
     private final KittyRepository kittyRepository;
+    private final PersonRepository personRepository;
 
     @Autowired
-    public KittyServiceImpl(KittyRepository kittyRepository) {
+    public KittyServiceImpl(KittyRepository kittyRepository, PersonRepository personRepository) {
         this.kittyRepository = kittyRepository;
+        this.personRepository = personRepository;
     }
 
     @Override
-    public Kitty save(Kitty entity) {
+    public Kitty save(Kitty entity, String username) {
+        entity.setPerson(personRepository.findByUsername(username));
         if (entity.getDateOfBirth() == null)
             entity.setDateOfBirth(LocalDate.now());
         return kittyRepository.saveAndFlush(entity);
@@ -31,7 +35,7 @@ public class KittyServiceImpl implements KittyService {
 
     @Override
     @Transactional
-    public Kitty saveOrUpdate(Long id, Kitty entity) {
+    public Kitty saveOrUpdate(Long id, Kitty entity, String username) {
         Kitty kitty = kittyRepository.findById(id)
                 .map(kittyFound -> {
                     kittyFound.setName(entity.getName());
@@ -41,7 +45,7 @@ public class KittyServiceImpl implements KittyService {
                     return kittyFound;
                 })
                 .orElse(entity);
-        return save(kitty);
+        return save(kitty, username);
     }
 
     @Override
@@ -83,7 +87,7 @@ public class KittyServiceImpl implements KittyService {
         Kitty kittyFriend = kittyRepository.findById(friendId).orElseThrow(() -> new DomainException("Kitty-friend wasn't found"));
         kitty.addFriend(kittyFriend);
         kittyFriend.addFriend(kitty);
-        save(kitty);
-        save(kittyFriend);
+        save(kitty, kitty.getPerson().getUsername());
+        save(kittyFriend, kittyFriend.getPerson().getUsername());
     }
 }

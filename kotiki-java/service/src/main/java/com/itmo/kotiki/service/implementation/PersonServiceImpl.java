@@ -7,9 +7,13 @@ import com.itmo.kotiki.repository.PersonRepository;
 import com.itmo.kotiki.service.PersonService;
 import com.itmo.kotiki.tool.DomainException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityNotFoundException;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -46,9 +50,27 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        Person person = personRepository.findByUsername(username);
+        if (person == null) {
+            throw new UsernameNotFoundException(username);
+        }
+        return person;
+    }
+
+    @Override
     public Person findById(Long id) {
         return personRepository.findById(id)
                 .orElseThrow(() -> new DomainException("Person wasn't found"));
+    }
+
+    @Override
+    public Person findByUsername(String username) {
+        var person = personRepository.findByUsername(username);
+        if (person == null) {
+            throw new EntityNotFoundException(username);
+        }
+        return person;
     }
 
     @Override
