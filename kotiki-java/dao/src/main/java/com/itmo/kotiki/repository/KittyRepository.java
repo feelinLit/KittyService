@@ -10,7 +10,10 @@ import java.util.List;
 @Repository
 public interface KittyRepository extends JpaRepository<Kitty, Long> {
     List<Kitty> findAllByBreed(String breed);
+
     List<Kitty> findAllByColor(Color color);
+
     List<Kitty> findAllByColorAndPerson_Username(Color color, String username);
+
     List<Kitty> findAllByBreedAndPerson_Username(String breed, String username);
 }

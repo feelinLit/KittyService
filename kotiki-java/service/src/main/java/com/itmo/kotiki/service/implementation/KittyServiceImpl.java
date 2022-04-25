@@ -65,6 +65,7 @@ public class KittyServiceImpl implements KittyService {
     public List<Kitty> findAll() {
         return kittyRepository.findAll();
     }
+
     public List<Kitty> findAll(String breed) {
         return kittyRepository.findAllByBreed(breed);
     }

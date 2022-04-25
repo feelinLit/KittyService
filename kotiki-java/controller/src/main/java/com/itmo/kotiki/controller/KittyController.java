@@ -3,17 +3,13 @@ package com.itmo.kotiki.controller;
 import com.itmo.kotiki.dto.KittyDto;
 import com.itmo.kotiki.entity.Color;
 import com.itmo.kotiki.entity.Kitty;
-import com.itmo.kotiki.entity.Person;
 import com.itmo.kotiki.service.KittyService;
 import com.itmo.kotiki.service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.web.authentication.Http403ForbiddenEntryPoint;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -37,8 +33,8 @@ class KittyController {
         boolean isAdmin = authentication.getAuthorities().stream().anyMatch(ga -> ga.getAuthority().equals("ROLE_ADMIN"));
         if (isAdmin)
             return kittyService.findAll(color).stream()
-                .map(this::convertToDto)
-                .toList();
+                    .map(this::convertToDto)
+                    .toList();
         return kittyService.findAll(color, user.getUsername()).stream()
                 .map(this::convertToDto)
                 .toList();

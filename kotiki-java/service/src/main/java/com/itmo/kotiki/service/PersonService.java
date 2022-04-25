@@ -1,6 +1,5 @@
 package com.itmo.kotiki.service;
 
-import com.itmo.kotiki.entity.Kitty;
 import com.itmo.kotiki.entity.Person;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
