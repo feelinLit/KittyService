@@ -34,14 +34,12 @@ class KittyController {
     @ResponseBody
     public List<KittyDto> findAllByColor(@PathVariable Color color, Authentication authentication) {
         var user = personService.loadUserByUsername(authentication.getName());
-        var kitties = kittyService.findAll(color);
         boolean isAdmin = authentication.getAuthorities().stream().anyMatch(ga -> ga.getAuthority().equals("ROLE_ADMIN"));
         if (isAdmin)
-            return kitties.stream()
+            return kittyService.findAll(color).stream()
                 .map(this::convertToDto)
                 .toList();
-        return kitties.stream()
-                .filter(k -> Objects.equals(k.getPerson().getUsername(), user.getUsername()))
+        return kittyService.findAll(color, user.getUsername()).stream()
                 .map(this::convertToDto)
                 .toList();
     }
@@ -50,14 +48,12 @@ class KittyController {
     @ResponseBody
     public List<KittyDto> findAllByBreed(@PathVariable String breed, Authentication authentication) {
         var user = personService.loadUserByUsername(authentication.getName());
-        var kitties = kittyService.findAll(breed);
         boolean isAdmin = authentication.getAuthorities().stream().anyMatch(ga -> ga.getAuthority().equals("ROLE_ADMIN"));
         if (isAdmin)
-            return kitties.stream()
+            return kittyService.findAll(breed).stream()
                     .map(this::convertToDto)
                     .toList();
-        return kitties.stream()
-                .filter(k -> Objects.equals(k.getPerson().getUsername(), user.getUsername()))
+        return kittyService.findAll(breed, user.getUsername()).stream()
                 .map(this::convertToDto)
                 .toList();
     }
@@ -66,8 +62,8 @@ class KittyController {
     @ResponseBody
     public KittyDto findById(@PathVariable("id") Long id, Authentication authentication) {
         var user = personService.loadUserByUsername(authentication.getName());
-        var kitty = kittyService.findById(id);
         boolean isAdmin = authentication.getAuthorities().stream().anyMatch(ga -> ga.getAuthority().equals("ROLE_ADMIN"));
+        var kitty = kittyService.findById(id);
         if (isAdmin || !Objects.equals(kitty.getPerson().getUsername(), authentication.getName()))
             return null;
         return convertToDto(kitty);

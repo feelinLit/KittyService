@@ -13,7 +13,9 @@ public interface KittyService extends Service<Kitty> {
 
     Kitty saveOrUpdate(Long id, Kitty entity, String username);
 
-    List<Kitty> findAll(Color color);
+    List<Kitty> findAll(Color color, String username);
 
+    List<Kitty> findAll(String breed, String username);
+    List<Kitty> findAll(Color color);
     List<Kitty> findAll(String breed);
 }

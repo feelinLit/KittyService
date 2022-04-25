@@ -65,15 +65,22 @@ public class KittyServiceImpl implements KittyService {
     public List<Kitty> findAll() {
         return kittyRepository.findAll();
     }
+    public List<Kitty> findAll(String breed) {
+        return kittyRepository.findAllByBreed(breed);
+    }
 
-    @Override
     public List<Kitty> findAll(Color color) {
         return kittyRepository.findAllByColor(color);
     }
 
     @Override
-    public List<Kitty> findAll(String breed) {
-        return kittyRepository.findAllByBreed(breed);
+    public List<Kitty> findAll(Color color, String username) {
+        return kittyRepository.findAllByColorAndPerson_Username(color, username);
+    }
+
+    @Override
+    public List<Kitty> findAll(String breed, String username) {
+        return kittyRepository.findAllByBreedAndPerson_Username(breed, username);
     }
 
     @Override
