@@ -2,9 +2,11 @@ package com.itmo.kotiki.security;
 
 import com.itmo.kotiki.service.PersonService;
 import com.itmo.kotiki.service.implementation.PersonServiceImpl;
+import com.itmo.kotiki.SpringBootRestApplication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -22,14 +24,23 @@ import javax.sql.DataSource;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    private PersonService personService;
+    private UserDetailsService personService;
 
-    @SuppressWarnings("deprecation")
+    @Autowired
+    private PasswordEncoder encoder;
+
+    @Bean
+    public DaoAuthenticationProvider authProvider() {
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+        authProvider.setUserDetailsService(personService);
+        authProvider.setPasswordEncoder(encoder);
+        return authProvider;
+    }
+
     @Override
     protected void configure(AuthenticationManagerBuilder auth)
             throws Exception {
-        var passwordEncoder = NoOpPasswordEncoder.getInstance();
-        auth.userDetailsService(personService).passwordEncoder(passwordEncoder);
+        auth.authenticationProvider(authProvider());
     }
 
     @Override

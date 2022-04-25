@@ -8,8 +8,8 @@ import com.itmo.kotiki.service.PersonService;
 import com.itmo.kotiki.tool.DomainException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,17 +22,20 @@ public class PersonServiceImpl implements PersonService {
 
     private final PersonRepository personRepository;
     private final KittyRepository kittyRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public PersonServiceImpl(PersonRepository personRepository, KittyRepository kittyRepository) {
+    public PersonServiceImpl(PersonRepository personRepository, KittyRepository kittyRepository, PasswordEncoder passwordEncoder) {
         this.personRepository = personRepository;
         this.kittyRepository = kittyRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
     public Person save(Person entity) {
         if (entity.getDateOfBirth() == null)
             entity.setDateOfBirth(LocalDate.now());
+        entity.setPassword(passwordEncoder.encode(entity.getPassword()));
         return personRepository.saveAndFlush(entity);
     }
 
