@@ -68,7 +68,7 @@ class KittyController {
         var user = personService.loadUserByUsername(authentication.getName());
         var kitty = kittyService.findById(id);
         boolean isAdmin = authentication.getAuthorities().stream().anyMatch(ga -> ga.getAuthority().equals("ROLE_ADMIN"));
-        if (isAdmin && !Objects.equals(kitty.getPerson().getUsername(), authentication.getName()))
+        if (isAdmin || !Objects.equals(kitty.getPerson().getUsername(), authentication.getName()))
             return null;
         return convertToDto(kitty);
     }
@@ -88,7 +88,7 @@ class KittyController {
         var user = personService.loadUserByUsername(authentication.getName());
         var kitty = kittyService.findById(id);
         boolean isAdmin = authentication.getAuthorities().stream().anyMatch(ga -> ga.getAuthority().equals("ROLE_ADMIN"));
-        if (isAdmin && !Objects.equals(kitty.getPerson().getUsername(), authentication.getName()))
+        if (isAdmin || !Objects.equals(kitty.getPerson().getUsername(), authentication.getName()))
             throw new IllegalAccessError("Person doesnt own this cat");
         return convertToDto(kittyService.saveOrUpdate(id, convertToEntity(kittyDto), authentication.getName()));
     }
@@ -99,7 +99,7 @@ class KittyController {
         var user = personService.loadUserByUsername(authentication.getName());
         var kitty = kittyService.findById(id);
         boolean isAdmin = authentication.getAuthorities().stream().anyMatch(ga -> ga.getAuthority().equals("ROLE_ADMIN"));
-        if (isAdmin && !Objects.equals(kitty.getPerson().getUsername(), authentication.getName()))
+        if (isAdmin || !Objects.equals(kitty.getPerson().getUsername(), authentication.getName()))
             throw new IllegalAccessError("Person doesnt own this cat");
         kittyService.delete(id);
     }
