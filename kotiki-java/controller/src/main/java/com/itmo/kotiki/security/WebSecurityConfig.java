@@ -1,5 +1,6 @@
 package com.itmo.kotiki.security;
 
+import com.itmo.kotiki.entity.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,7 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    private UserDetailsService personService;
+    private UserDetailsService userService;
 
     @Autowired
     private PasswordEncoder encoder;
@@ -24,7 +25,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public DaoAuthenticationProvider authProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        authProvider.setUserDetailsService(personService);
+        authProvider.setUserDetailsService(userService);
         authProvider.setPasswordEncoder(encoder);
         return authProvider;
     }
@@ -39,10 +40,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/person/**").hasRole("ADMIN")
-                .antMatchers("/**").hasAnyRole("ADMIN", "USER")
-                .and().formLogin()
-                .and().logout()
+                .antMatchers("/api/person/**").hasAuthority(Role.ROLE_ADMIN.name())
+                .antMatchers("api/kitty/**").authenticated()
                 .and().httpBasic()
                 .and().csrf().disable();
     }

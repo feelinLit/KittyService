@@ -13,7 +13,7 @@ public interface KittyRepository extends JpaRepository<Kitty, Long> {
 
     List<Kitty> findAllByColor(Color color);
 
-    List<Kitty> findAllByColorAndPerson_Username(Color color, String username);
+    List<Kitty> findAllByBreedAndPerson_User_Username(String breed, String user);
 
-    List<Kitty> findAllByBreedAndPerson_Username(String breed, String username);
+    List<Kitty> findAllByColorAndPerson_User_Username(Color color, String user);
 }

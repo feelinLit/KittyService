@@ -1,26 +1,24 @@
 package com.itmo.kotiki.dto;
 
-import com.itmo.kotiki.entity.Role;
-
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
 
-public class PersonDto {
-
+public class PersonDto implements Serializable {
     private final Long id;
     private final String name;
     private final LocalDate dateOfBirth;
-    private final String username;
-    private final String password;
-    private final Role role;
+    private final UserDto user;
 
-    public PersonDto(Long id, String name, String username, String password, Role role, LocalDate dateOfBirth) {
+    public PersonDto(Long id, String name, LocalDate dateOfBirth, UserDto user) {
         this.id = id;
         this.name = name;
         this.dateOfBirth = dateOfBirth;
-        this.username = username;
-        this.password = password;
-        this.role = role;
+        this.user = user;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public String getName() {
@@ -31,16 +29,8 @@ public class PersonDto {
         return dateOfBirth;
     }
 
-    public String getUsername() {
-        return username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public Role getRole() {
-        return role;
+    public UserDto getUser() {
+        return user;
     }
 
     @Override
@@ -48,29 +38,23 @@ public class PersonDto {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PersonDto entity = (PersonDto) o;
-        return Objects.equals(this.name, entity.name) &&
+        return Objects.equals(this.id, entity.id) &&
+                Objects.equals(this.name, entity.name) &&
                 Objects.equals(this.dateOfBirth, entity.dateOfBirth) &&
-                Objects.equals(this.username, entity.username) &&
-                Objects.equals(this.password, entity.password) &&
-                Objects.equals(this.role, entity.role);
+                Objects.equals(this.user, entity.user);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, dateOfBirth, username, password, role);
+        return Objects.hash(id, name, dateOfBirth, user);
     }
 
     @Override
     public String toString() {
         return getClass().getSimpleName() + "(" +
+                "id = " + id + ", " +
                 "name = " + name + ", " +
                 "dateOfBirth = " + dateOfBirth + ", " +
-                "username = " + username + ", " +
-                "password = " + password + ", " +
-                "role = " + role + ")";
-    }
-
-    public Long getId() {
-        return id;
+                "user = " + user + ")";
     }
 }

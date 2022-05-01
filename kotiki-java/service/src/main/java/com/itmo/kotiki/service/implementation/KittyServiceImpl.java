@@ -27,7 +27,7 @@ public class KittyServiceImpl implements KittyService {
 
     @Override
     public Kitty save(Kitty entity, String username) {
-        entity.setPerson(personRepository.findByUsername(username));
+        entity.setPerson(personRepository.findPersonByUser_Username(username));
         if (entity.getDateOfBirth() == null)
             entity.setDateOfBirth(LocalDate.now());
         return kittyRepository.saveAndFlush(entity);
@@ -76,12 +76,12 @@ public class KittyServiceImpl implements KittyService {
 
     @Override
     public List<Kitty> findAll(Color color, String username) {
-        return kittyRepository.findAllByColorAndPerson_Username(color, username);
+        return kittyRepository.findAllByColorAndPerson_User_Username(color, username);
     }
 
     @Override
     public List<Kitty> findAll(String breed, String username) {
-        return kittyRepository.findAllByBreedAndPerson_Username(breed, username);
+        return kittyRepository.findAllByBreedAndPerson_User_Username(breed, username);
     }
 
     @Override
@@ -95,7 +95,7 @@ public class KittyServiceImpl implements KittyService {
         Kitty kittyFriend = kittyRepository.findById(friendId).orElseThrow(() -> new DomainException("Kitty-friend wasn't found"));
         kitty.addFriend(kittyFriend);
         kittyFriend.addFriend(kitty);
-        save(kitty, kitty.getPerson().getUsername());
-        save(kittyFriend, kittyFriend.getPerson().getUsername());
+        save(kitty, kitty.getPerson().getUser().getUsername());
+        save(kittyFriend, kittyFriend.getPerson().getUser().getUsername());
     }
 }

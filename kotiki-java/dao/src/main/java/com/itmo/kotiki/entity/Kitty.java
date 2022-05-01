@@ -27,7 +27,7 @@ public class Kitty extends BaseEntity {
     @Column(name = "date_of_birth", nullable = false)
     private LocalDate dateOfBirth;
     @ManyToOne
-    @JoinColumn(name = "person_ID")
+    @JoinColumn(name = "person_id")
     private Person person;
 
     protected Kitty() {

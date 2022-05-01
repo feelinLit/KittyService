@@ -1,19 +1,15 @@
 package com.itmo.kotiki.entity;
 
 import com.itmo.kotiki.tool.DaoException;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 @Entity
 @Table(name = "person")
-public class Person extends BaseEntity implements UserDetails {
+public class Person extends BaseEntity {
 
     @OneToMany(mappedBy = "person", orphanRemoval = true, fetch = FetchType.LAZY)
     private final List<Kitty> kitties = new ArrayList<>();
@@ -24,27 +20,27 @@ public class Person extends BaseEntity implements UserDetails {
     @Column(name = "date_of_birth", nullable = false)
     private LocalDate dateOfBirth;
 
-    @Column(name = "username", nullable = false, unique = true, length = 20)
-    private String username;
-
-    @Column(name = "password", length = 100)
-    private String password;
-
-    @Enumerated
-    @Column(name = "role")
-    private Role role;
+    @OneToOne(orphanRemoval = true)
+    @JoinColumn(name = "user_id")
+    private User user;
 
     protected Person() {
     }
 
-    public Person(String name, String username, String password, Role role, LocalDate dateOfBirth, Kitty kitty) {
+    public Person(String name, LocalDate dateOfBirth, Kitty kitty, User user) {
         this.name = name;
-        this.username = username;
-        this.password = password;
-        this.role = role;
         this.dateOfBirth = dateOfBirth;
         if (kitty != null)
             addKitty(kitty);
+        this.user = user;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public List<Kitty> getKitties() {
@@ -74,56 +70,5 @@ public class Person extends BaseEntity implements UserDetails {
         this.name = name;
     }
 
-    public Role getRole() {
-        return role;
-    }
 
-    public void setRole(Role role) {
-        this.role = role;
-    }
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        List<SimpleGrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority(role.name()));
-        return authorities;
-    }
-
-    @Override
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    @Override
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return true;
-    }
 }

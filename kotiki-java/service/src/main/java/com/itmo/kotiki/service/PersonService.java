@@ -1,11 +1,10 @@
 package com.itmo.kotiki.service;
 
 import com.itmo.kotiki.entity.Person;
-import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.util.List;
 
-public interface PersonService extends Service<Person>, UserDetailsService {
+public interface PersonService extends Service<Person> {
 
     Person save(Person entity);
 

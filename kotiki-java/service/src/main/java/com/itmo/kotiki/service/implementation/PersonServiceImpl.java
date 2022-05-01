@@ -4,11 +4,10 @@ import com.itmo.kotiki.entity.Kitty;
 import com.itmo.kotiki.entity.Person;
 import com.itmo.kotiki.repository.KittyRepository;
 import com.itmo.kotiki.repository.PersonRepository;
+import com.itmo.kotiki.repository.UserRepository;
 import com.itmo.kotiki.service.PersonService;
 import com.itmo.kotiki.tool.DomainException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,12 +21,14 @@ public class PersonServiceImpl implements PersonService {
 
     private final PersonRepository personRepository;
     private final KittyRepository kittyRepository;
+    private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public PersonServiceImpl(PersonRepository personRepository, KittyRepository kittyRepository, PasswordEncoder passwordEncoder) {
+    public PersonServiceImpl(PersonRepository personRepository, KittyRepository kittyRepository, UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.personRepository = personRepository;
         this.kittyRepository = kittyRepository;
+        this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -35,7 +36,9 @@ public class PersonServiceImpl implements PersonService {
     public Person save(Person entity) {
         if (entity.getDateOfBirth() == null)
             entity.setDateOfBirth(LocalDate.now());
-        entity.setPassword(passwordEncoder.encode(entity.getPassword()));
+        var user = entity.getUser();
+        user.setPassword(passwordEncoder.encode(entity.getUser().getPassword()));
+        userRepository.saveAndFlush(user);
         return personRepository.saveAndFlush(entity);
     }
 
@@ -53,15 +56,6 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Person person = personRepository.findByUsername(username);
-        if (person == null) {
-            throw new UsernameNotFoundException(username);
-        }
-        return person;
-    }
-
-    @Override
     public Person findById(Long id) {
         return personRepository.findById(id)
                 .orElseThrow(() -> new DomainException("Person wasn't found"));
@@ -69,7 +63,7 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     public Person findByUsername(String username) {
-        var person = personRepository.findByUsername(username);
+        var person = personRepository.findPersonByUser_Username(username);
         if (person == null) {
             throw new EntityNotFoundException(username);
         }
