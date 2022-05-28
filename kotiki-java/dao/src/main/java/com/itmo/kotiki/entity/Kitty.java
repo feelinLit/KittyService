@@ -12,28 +12,23 @@ import java.util.List;
 @Table(name = "kitty")
 public class Kitty extends BaseEntity {
 
-    @Column(name = "breed", length = 60)
-    private String breed;
-
-    @Column(name = "name", length = 60)
-    private String name;
-
-    @Enumerated
-    @Column(name = "color")
-    private Color color;
-
-    @Column(name = "date_of_birth", nullable = false)
-    private LocalDate dateOfBirth;
-
-    @ManyToOne
-    @JoinColumn(name = "person_ID")
-    private Person person;
-
     @ManyToMany
     @JoinTable(name = "kitty_friends",
             joinColumns = @JoinColumn(name = "kitty_1_id"),
             inverseJoinColumns = @JoinColumn(name = "kitties_2_id"))
     private final List<Kitty> kittyFriends = new ArrayList<>();
+    @Column(name = "breed", length = 60)
+    private String breed;
+    @Column(name = "name", length = 60)
+    private String name;
+    @Enumerated
+    @Column(name = "color")
+    private Color color;
+    @Column(name = "date_of_birth", nullable = false)
+    private LocalDate dateOfBirth;
+    @ManyToOne
+    @JoinColumn(name = "person_id")
+    private Person person;
 
     protected Kitty() {
     }

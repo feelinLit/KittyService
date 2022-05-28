@@ -1,7 +1,9 @@
 package com.itmo.kotiki.controller;
 
 import com.itmo.kotiki.dto.PersonDto;
+import com.itmo.kotiki.dto.UserDto;
 import com.itmo.kotiki.entity.Person;
+import com.itmo.kotiki.entity.User;
 import com.itmo.kotiki.service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -71,10 +73,14 @@ public class PersonController {
     }
 
     private PersonDto convertToDto(Person person) {
-        return new PersonDto(person.getId(), person.getName(), person.getDateOfBirth());
+        return new PersonDto(person.getId(), person.getName(), person.getDateOfBirth(),
+                new UserDto(person.getUser().getId(), person.getUser().getUsername(), person.getUser().getPassword(), person.getUser().getRole()));
     }
 
     private Person convertToEntity(PersonDto personDto) {
-        return new Person(personDto.getName(), personDto.getDateOfBirth(), null);
+        var person = new Person(personDto.getName(), personDto.getDateOfBirth(), null, null);
+        var user = new User(personDto.getUser().getUsername(), personDto.getUser().getPassword(), personDto.getUser().getRole());
+        person.setUser(user);
+        return person;
     }
 }

@@ -20,14 +20,27 @@ public class Person extends BaseEntity {
     @Column(name = "date_of_birth", nullable = false)
     private LocalDate dateOfBirth;
 
+    @OneToOne(orphanRemoval = true)
+    @JoinColumn(name = "user_id")
+    private User user;
+
     protected Person() {
     }
 
-    public Person(String name, LocalDate dateOfBirth, Kitty kitty) {
+    public Person(String name, LocalDate dateOfBirth, Kitty kitty, User user) {
         this.name = name;
         this.dateOfBirth = dateOfBirth;
         if (kitty != null)
             addKitty(kitty);
+        this.user = user;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public List<Kitty> getKitties() {
@@ -56,4 +69,6 @@ public class Person extends BaseEntity {
     public void setName(String name) {
         this.name = name;
     }
+
+
 }

@@ -12,4 +12,8 @@ public interface KittyRepository extends JpaRepository<Kitty, Long> {
     List<Kitty> findAllByBreed(String breed);
 
     List<Kitty> findAllByColor(Color color);
+
+    List<Kitty> findAllByBreedAndPerson_User_Username(String breed, String user);
+
+    List<Kitty> findAllByColorAndPerson_User_Username(Color color, String user);
 }
