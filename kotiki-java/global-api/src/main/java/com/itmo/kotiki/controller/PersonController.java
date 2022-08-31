@@ -51,7 +51,7 @@ public class PersonController {
         var userDto = personDto.getUser();
         var encodedPassword = passwordEncoder.encode(userDto.getPassword());
         var userDtoWithEncodedPassword = new UserDto(userDto.getId(), userDto.getUsername(), encodedPassword, userDto.getRole());
-        var personDtoWithEncodedPassword = new PersonDto(personDto.getId(), personDto.getName(), personDto.getDateOfBirth(), userDto);
+        var personDtoWithEncodedPassword = new PersonDto(personDto.getId(), personDto.getName(), personDto.getDateOfBirth(), userDtoWithEncodedPassword);
         return (PersonDto) template.convertSendAndReceive(exchange.getName(), "save", personDtoWithEncodedPassword);
     }
 
