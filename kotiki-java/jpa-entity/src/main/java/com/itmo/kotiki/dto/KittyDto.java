@@ -56,4 +56,8 @@ public class KittyDto implements Serializable {
     public LocalDate getDateOfBirth() {
         return dateOfBirth;
     }
+
+    public PersonDto getPerson() {
+        return person;
+    }
 }

@@ -2,7 +2,6 @@ package com.itmo.kotiki.controller;
 
 import com.itmo.kotiki.dto.*;
 import com.itmo.kotiki.entity.Color;
-import com.itmo.kotiki.entity.Kitty;
 import com.itmo.kotiki.entity.Role;
 import com.itmo.kotiki.security.user.service.UserService;
 import org.springframework.amqp.core.DirectExchange;
@@ -62,17 +61,16 @@ class KittyController {
     public KittyDto findById(@PathVariable("id") Long id, Authentication authentication) {
         var user = userService.loadUserByUsername(authentication.getName());
         boolean isAdmin = authentication.getAuthorities().stream().anyMatch(ga -> ga.getAuthority().equals(Role.ROLE_ADMIN.name()));
-        var kitty = (Kitty) template.convertSendAndReceive(exchange.getName(), "findById", id);
+        var kitty = (KittyDto) template.convertSendAndReceive(exchange.getName(), "findById", id);
         if (isAdmin || !Objects.equals(kitty.getPerson().getUser().getUsername(), authentication.getName()))
             return null;
-        return new KittyDto(kitty);
+        return kitty;
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public KittyDto create(@RequestBody KittyDto kittyDto, Authentication authentication) {
-        Kitty kitty = (Kitty) template.convertSendAndReceive(exchange.getName(), "save", kittyDto);
-        return new KittyDto(kitty);
+        return (KittyDto) template.convertSendAndReceive(exchange.getName(), "save", kittyDto);
     }
 
     @PutMapping(value = "/{id}")
@@ -81,7 +79,7 @@ class KittyController {
         if (!Objects.equals(id, kittyDto.getId()))
             throw new IllegalArgumentException("IDs don't match");
         var user = userService.loadUserByUsername(authentication.getName());
-        var kitty = (Kitty) template.convertSendAndReceive(exchange.getName(), "findById", id);
+        var kitty = (KittyDto) template.convertSendAndReceive(exchange.getName(), "findById", id);
         boolean isAdmin = authentication.getAuthorities().stream().anyMatch(ga -> ga.getAuthority().equals(Role.ROLE_ADMIN.name()));
         if (isAdmin || !Objects.equals(kitty.getPerson().getUser().getUsername(), authentication.getName()))
             throw new IllegalAccessError("Person doesnt own this cat");
@@ -92,9 +90,9 @@ class KittyController {
     @ResponseStatus(HttpStatus.OK)
     public void delete(@PathVariable("id") Long id, Authentication authentication) {
         var user = userService.loadUserByUsername(authentication.getName());
-        var kitty = (Kitty) template.convertSendAndReceive(exchange.getName(), "findById", id);
+        var kitty = (KittyDto) template.convertSendAndReceive(exchange.getName(), "findById", id);
         boolean isAdmin = authentication.getAuthorities().stream().anyMatch(ga -> ga.getAuthority().equals(Role.ROLE_ADMIN.name()));
-        if (isAdmin || !Objects.equals(kitty.getPerson().getUser().getUsername(), authentication.getName()))
+        if (!Objects.equals(kitty.getPerson().getUser().getUsername(), authentication.getName()))
             throw new IllegalAccessError("Person doesnt own this cat");
         template.convertAndSend(exchange.getName(), "delete", id);
     }
