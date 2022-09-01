@@ -81,7 +81,7 @@ class KittyController {
         var user = userService.loadUserByUsername(authentication.getName());
         var kitty = (KittyDto) template.convertSendAndReceive(exchange.getName(), "findById", id);
         boolean isAdmin = authentication.getAuthorities().stream().anyMatch(ga -> ga.getAuthority().equals(Role.ROLE_ADMIN.name()));
-        if (isAdmin || !Objects.equals(kitty.getPerson().getUser().getUsername(), authentication.getName()))
+        if (!isAdmin && !Objects.equals(kitty.getPerson().getUser().getUsername(), authentication.getName()))
             throw new IllegalAccessError("Person doesnt own this cat");
         return (KittyDto) template.convertSendAndReceive(exchange.getName(), "saveOrUpdate", kittyDto);
     }
@@ -92,7 +92,7 @@ class KittyController {
         var user = userService.loadUserByUsername(authentication.getName());
         var kitty = (KittyDto) template.convertSendAndReceive(exchange.getName(), "findById", id);
         boolean isAdmin = authentication.getAuthorities().stream().anyMatch(ga -> ga.getAuthority().equals(Role.ROLE_ADMIN.name()));
-        if (!Objects.equals(kitty.getPerson().getUser().getUsername(), authentication.getName()))
+        if (!isAdmin && !Objects.equals(kitty.getPerson().getUser().getUsername(), authentication.getName()))
             throw new IllegalAccessError("Person doesnt own this cat");
         template.convertAndSend(exchange.getName(), "delete", id);
     }
