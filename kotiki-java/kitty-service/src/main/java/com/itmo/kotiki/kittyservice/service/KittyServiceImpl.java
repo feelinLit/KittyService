@@ -45,7 +45,8 @@ public class KittyServiceImpl implements KittyService {
                     return kittyFound;
                 })
                 .orElse(entity.convertToEntity());
-        return save(new KittyDto(kitty));
+        kittyRepository.flush();
+        return new KittyDto(kitty);
     }
 
     @Override

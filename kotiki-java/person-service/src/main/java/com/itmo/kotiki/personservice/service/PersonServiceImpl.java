@@ -43,7 +43,8 @@ public class PersonServiceImpl implements PersonService {
                     return personFound;
                 })
                 .orElse(entity.convertToEntity());
-        return save(PersonDto.convertToDto(person));
+        personRepository.flush();
+        return PersonDto.convertToDto(person);
     }
 
     @Override
