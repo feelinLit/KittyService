@@ -36,10 +36,14 @@ public class SpringBootRestApplication {
             template.convertSendAndReceive(personExchange.getName(), "save", PersonDto.convertToDto(user1));
             template.convertSendAndReceive(personExchange.getName(), "save", PersonDto.convertToDto(user2));
 
-            Kitty kitty1 = new Kitty("MegaSuperNyash", "Sharik", Color.BLACK, LocalDate.now(), user1);
-            Kitty kitty2 = new Kitty("MegaSuperNyash", "Kvadratik", Color.BLACK, LocalDate.now(), user2);
+            Kitty kitty1 = new Kitty("Sphynx", "Sharik", Color.BLACK, LocalDate.now(), user1);
+            Kitty kitty3 = new Kitty("Siberian", "Bobik", Color.WHITE, LocalDate.now(), user1);
+            Kitty kitty2 = new Kitty("Munchkin", "Kvadratik", Color.BLACK, LocalDate.now(), user2);
+            Kitty kitty4 = new Kitty("Russian", "Рыжик", Color.BLACK, LocalDate.now(), user2);
             template.convertSendAndReceive(kittyExchange.getName(), "save", new KittyDto(kitty1));
+            template.convertSendAndReceive(kittyExchange.getName(), "save", new KittyDto(kitty3));
             template.convertSendAndReceive(kittyExchange.getName(), "save", new KittyDto(kitty2));
+            template.convertSendAndReceive(kittyExchange.getName(), "save", new KittyDto(kitty4));
         });
     }
 }
