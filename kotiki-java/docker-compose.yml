@@ -2,31 +2,43 @@ version: "3.8"
 
 services:
   global-api:
-    build: "./global-api/"
+    image: "debill/kotiki-java:global-api"
     ports:
-      - "8080:8080"
+      - "8083:8080"
     container_name: global-api
     command: ["./wait-for-it.sh", "rabbitmq:5672", "java","-jar","/app.jar"]
     depends_on:
       - db
+    deploy:
+      resources:
+        limits:
+          memory: 200M
 
   kitty-service:
-    build: "./kitty-service/"
+    image: "debill/kotiki-java:kitty-service"
     ports:
       - "8082:8080"
     container_name: kitty-service
     command: ["./wait-for-it.sh", "db:5432", "java","-jar","/app.jar"]
     depends_on:
       - db
+    deploy:
+      resources:
+        limits:
+          memory: 200M
 
   person-service:
-    build: "./person-service/"
+    image: "debill/kotiki-java:person-service"
     ports:
       - "8081:8080"
     container_name: person-service
     command: ["./wait-for-it.sh", "db:5432", "java","-jar","/app.jar"]
     depends_on:
       - db
+    deploy:
+      resources:
+        limits:
+          memory: 200M
 
   db:
     image: "postgres:14.2"
@@ -35,6 +47,10 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_DB=KotikiJava
+    deploy:
+      resources:
+        limits:
+          memory: 200M
 
   rabbitmq:
     image: rabbitmq:management-alpine
@@ -43,3 +59,21 @@ services:
     ports:
       - "5672:5672"
       - "15672:15672"
+    deploy:
+      resources:
+        limits:
+          memory: 200M
+
+  frontend:
+    image: "debill/kotiki-java:frontend"
+    container_name: frontend
+    ports:
+      - "3001:3000"
+    stdin_open: true
+    tty: true
+    depends_on:
+      - global-api
+    deploy:
+      resources:
+        limits:
+          memory: 800M
