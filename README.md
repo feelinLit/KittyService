@@ -22,3 +22,12 @@ The methods to retrieve information and cat and owner information are protected 
 
 <img src="https://user-images.githubusercontent.com/79377488/182382541-2d2c6b4d-125f-456d-b22d-34d1a5652a36.png" width="500">
 
+## :rocket: How to run with Docker
+
+1. Download file ``docker-compose.yml`` from this repo
+2. Place it in empty folder __named in english__
+3. Start console from created directive
+4. Run command ```docker compose up```
+5. Wait until docker images are pulled  
+
+Now you should be able to open ```localhost:3001``` and see the result!
