@@ -6,6 +6,7 @@ services:
     ports:
       - "8083:8080"
     container_name: global-api
+    restart: always
     command: ["./wait-for-it.sh", "rabbitmq:5672", "java","-jar","/app.jar"]
     depends_on:
       - db
